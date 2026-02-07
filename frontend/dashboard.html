@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Locker Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">THRESH<span style="color:white">OLD</span></div>
+        <div class="user-info">
+            <span class="role-badge" id="role-badge"></span>
+            <span style="font-weight:600" id="user"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <div class="container" id="main-container">
+        <!-- LOCKER SELECTOR -->
+        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+            <select id="locker-select" class="glass-panel"
+                style="padding: 0.5rem; border-radius: 8px; color: white; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);">
+                <option value="LOCKER_1">Locker 1</option>
+                <option value="LOCKER_2">Locker 2</option>
+                <option value="LOCKER_3">Locker 3</option>
+            </select>
+        </div>
+
+        <!-- SIDEBAR / STATUS (Desktop Left) -->
+        <aside class="glass-panel card status-display">
+            <div id="lock-icon" class="lock-icon">🔒</div>
+            <div id="system-status" class="status-text status-locked">LOCKED</div>
+
+            <div class="controls">
+                <button id="lock-btn" class="btn btn-lock" onclick="sendCommand('lock')">
+                    <span>🔒</span> LOCK
+                </button>
+                <button id="unlock-btn" class="btn btn-unlock" onclick="sendCommand('unlock')">
+                    <span>🔓</span> OPEN
+                </button>
+                <button id="reset-btn" class="btn btn-reset" onclick="sendCommand('reset')">
+                    <span>♻️</span> RESET SYSTEM
+                </button>
+            </div>
+
+            <!-- PIN UNLOCK SECTION -->
+            <div id="pin-unlock-section"
+                style="margin-top:1rem; padding:1rem; background:rgba(0,0,0,0.2); border-radius:8px;">
+                <div style="font-size:0.9rem; margin-bottom:0.5rem; opacity:0.8;">🔑 Unlock with PIN</div>
+                <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                    <input type="password" id="unlock-pin" placeholder="Enter 4-digit PIN" maxlength="4"
+                        style="flex:1; min-width:120px; padding:0.5rem; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3); color:white;">
+                    <button class="btn" onclick="unlockWithPIN()"
+                        style="background:linear-gradient(135deg, #10b981, #059669); padding:0.5rem 1rem;">
+                        Unlock
+                    </button>
+                    <button class="btn" onclick="showResetPIN()"
+                        style="background:linear-gradient(135deg, #8b5cf6, #7c3aed); padding:0.5rem 0.75rem;"
+                        title="Reset PIN">
+                        🔄
+                    </button>
+                </div>
+                <div id="pin-unlock-message" style="margin-top:0.5rem; font-size:0.85rem;"></div>
+                <!-- Reset PIN Form (hidden by default) -->
+                <div id="reset-pin-form"
+                    style="display:none; margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size:0.85rem; margin-bottom:0.5rem; opacity:0.8;">Enter new PIN:</div>
+                    <div style="display:flex; gap:0.5rem; align-items:center;">
+                        <input type="password" id="new-reset-pin" placeholder="New 4-digit PIN" maxlength="4"
+                            style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3); color:white;">
+                        <button class="btn" onclick="resetPIN()"
+                            style="background:linear-gradient(135deg, #f59e0b, #d97706); padding:0.5rem 1rem;">
+                            Set PIN
+                        </button>
+                    </div>
+                    <div id="reset-pin-message" style="margin-top:0.5rem; font-size:0.85rem;"></div>
+                </div>
+            </div>
+
+            <div class="indicators">
+                <div class="indicator">
+                    <div id="led-green" class="led"></div>
+                    <span class="label">Ready</span>
+                </div>
+                <div class="indicator">
+                    <div id="led-red" class="led"></div>
+                    <span class="label">Lock</span>
+                </div>
+                <div class="indicator">
+                    <div id="buzzer-icon" class="led"></div>
+                    <span class="label">Alert</span>
+                </div>
+            </div>
+
+            <div id="hardware-status" style="margin-top:1rem; font-size:0.8rem; opacity:0.6;">Hardware: Checking...
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT (Desktop Right) -->
+        <main class="main-col">
+
+            <!-- SIMULATION PANEL (Only shows if HW disconnected) -->
+            <div id="sim-panel" class="glass-panel card sim-panel" style="display:none;">
+                <h3>🔮 Simulation Mode <span class="role-badge role-user"
+                        style="margin-left:auto; font-size:0.6rem;">Active</span></h3>
+                <div class="sim-grid">
+                    <div class="sim-btn" onclick="simulateScan('VALID')">
+                        💳 Scan Valid Card
+                        <small>Unlocks Locker</small>
+                    </div>
+                    <div class="sim-btn" onclick="simulateScan('INVALID')">
+                        ⛔ Scan Invalid Card
+                        <small>Triggers Alert</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIN MANAGEMENT (Admin) -->
+            <div class="glass-panel card admin-only" id="pin-section" style="display:none;">
+                <h3>🔑 Security Settings</h3>
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <input type="password" id="new-pin" placeholder="New 4-Digit PIN" maxlength="4" style="flex:1;">
+                    <button class="btn" style="background:var(--neon-purple); flex:0 0 auto;"
+                        onclick="changePIN()">Update PIN</button>
+                </div>
+                <div id="pin-message" style="margin-top:0.5rem; font-size:0.9rem;"></div>
+            </div>
+
+            <!-- LOGS -->
+            <div class="glass-panel card">
+                <h3>📜 Activity Logs</h3>
+                <ul id="log-list" class="log-list">
+                    <li class="log-item" style="justify-content:center; opacity:0.5;">Loading logs...</li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- HIDDEN UTILS -->
+    <span id="role" style="display:none;"></span>
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

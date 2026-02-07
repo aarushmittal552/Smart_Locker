@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Locker Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-centered">
+        <div class="glass-panel login-card">
+            <h2 class="login-title">🔐 Smart Locker</h2>
+
+            <input type="text" id="username" placeholder="Username"
+                style="margin-bottom: 1rem; width: 100%; box-sizing: border-box;">
+            <input type="password" id="password" placeholder="Password"
+                style="margin-bottom: 1.5rem; width: 100%; box-sizing: border-box;">
+
+            <button class="btn btn-unlock" style="width: 100%;" onclick="login()">Login</button>
+
+            <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--text-secondary);">
+                Admin → Laptop Login<br>
+                Users → RFID Access
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+
+</body>
+
+</html>

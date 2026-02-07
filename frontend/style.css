@@ -1,0 +1,862 @@
+/* =========================================
+   PREMIUM GLASSMORPHISM UI - SMART LOCKER
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-dark: #0f172a;
+    --glass-bg: rgba(17, 25, 40, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.125);
+    --neon-blue: #38bdf8;
+    --neon-purple: #c084fc;
+    --neon-green: #4ade80;
+    --neon-red: #f87171;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(192, 132, 252, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(74, 222, 128, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* ===== AUTO-FILL FIX ===== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px #0f172a inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ===== GLASS CARD UTILITY ===== */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ===== HEADER ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.role-admin {
+    background: rgba(192, 132, 252, 0.2);
+    color: var(--neon-purple);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+.role-user {
+    background: rgba(56, 189, 248, 0.2);
+    color: var(--neon-blue);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    color: var(--neon-red);
+    border-color: rgba(248, 113, 113, 0.5);
+    background: rgba(248, 113, 113, 0.1);
+}
+
+/* ===== LAYOUT ===== */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .container {
+        grid-template-columns: 350px 1fr;
+        align-items: start;
+    }
+
+    .main-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+/* ===== CARDS ===== */
+.card {
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ===== STATUS DISPLAY ===== */
+.status-display {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.lock-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.status-text {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.status-locked .lock-icon {
+    transform: scale(1);
+}
+
+.status-unlocked .lock-icon {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+.status-locked {
+    color: var(--neon-red);
+    text-shadow: 0 0 30px rgba(248, 113, 113, 0.4);
+}
+
+.status-unlocked {
+    color: var(--neon-green);
+    text-shadow: 0 0 30px rgba(74, 222, 128, 0.4);
+}
+
+/* ===== CONTROL BUTTONS ===== */
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: white;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-lock {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-lock:hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+}
+
+.btn-unlock {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.btn-unlock:hover {
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+.btn-reset {
+    grid-column: span 2;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== HARDWARE INDICATORS ===== */
+.indicators {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.led {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1e293b;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.led.active-red {
+    background: var(--neon-red);
+    box-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
+}
+
+.led.active-green {
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+}
+
+.label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* ===== SIMULATION PANEL (NEW) ===== */
+.sim-panel {
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.sim-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+    animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.sim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.sim-btn {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    color: var(--neon-blue);
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.sim-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: var(--neon-blue);
+    transform: translateY(-2px);
+}
+
+.sim-btn small {
+    display: block;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+/* ===== INPUTS ===== */
+input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: var(--neon-purple);
+}
+
+/* ===== LOGS & INFO ===== */
+.log-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.log-item {
+    font-size: 0.85rem;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+}
+
+.log-item:last-child {
+    border: none;
+}
+
+.log-time {
+    font-family: monospace;
+    opacity: 0.6;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-card {
+    width: 340px;
+    padding: 2.5rem;
+}
+
+.login-title {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #fff, #94a3b8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Subtle animated background */
+@keyframes bgShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+nav {
+    background: #020617;
+    padding: 12px;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: #38bdf8;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: #7dd3fc;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* ===== Card Styles with Hover ===== */
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Status Badges ===== */
+.badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    animation: badgePop 0.3s ease;
+}
+
+@keyframes badgePop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.locked {
+    background: #991b1b;
+    box-shadow: 0 0 10px rgba(153, 27, 27, 0.5);
+}
+
+.unlocked {
+    background: #15803d;
+    box-shadow: 0 0 10px rgba(21, 128, 61, 0.5);
+}
+
+/* ===== Pulse Animation for Status ===== */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(56, 189, 248, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    }
+}
+
+.status-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ===== Camera Box ===== */
+.camera-box {
+    height: 220px;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #333;
+    border-radius: 8px;
+}
+
+/* ===== Button Styles ===== */
+button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#lock-btn {
+    background: #dc2626;
+    color: white;
+}
+
+#lock-btn:hover {
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+#unlock-btn {
+    background: #22c55e;
+    color: white;
+}
+
+#unlock-btn:hover {
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+#reset-btn {
+    background: #f59e0b;
+    color: white;
+}
+
+#reset-btn:hover {
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+/* ===== LED Indicators ===== */
+.hardware-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.hardware-panel h3 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.led-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.led-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.led {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s;
+}
+
+.led.red {
+    background: #4a1515;
+}
+
+.led.red.on {
+    background: #ef4444;
+    box-shadow: 0 0 15px #ef4444, 0 0 30px rgba(239, 68, 68, 0.5);
+}
+
+.led.red.blink {
+    animation: blinkRed 0.5s infinite;
+}
+
+.led.green {
+    background: #14401d;
+}
+
+.led.green.on {
+    background: #22c55e;
+    box-shadow: 0 0 15px #22c55e, 0 0 30px rgba(34, 197, 94, 0.5);
+}
+
+.led.green.blink {
+    animation: blinkGreen 0.5s infinite;
+}
+
+.led-label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.buzzer-icon {
+    font-size: 24px;
+    opacity: 0.3;
+    transition: all 0.2s;
+}
+
+.buzzer-icon.on {
+    opacity: 1;
+    animation: buzzPulse 0.2s ease;
+}
+
+@keyframes blinkRed {
+
+    0%,
+    100% {
+        background: #4a1515;
+        box-shadow: none;
+    }
+
+    50% {
+        background: #ef4444;
+        box-shadow: 0 0 15px #ef4444;
+    }
+}
+
+@keyframes blinkGreen {
+
+    0%,
+    100% {
+        background: #14401d;
+        box-shadow: none;
+    }
+
+    50% {
+        background: #22c55e;
+        box-shadow: 0 0 15px #22c55e;
+    }
+}
+
+@keyframes buzzPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.test-btn {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.test-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Login Styles ===== */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-card {
+    background: #020617;
+    padding: 30px;
+    border-radius: 12px;
+    width: 300px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-card input,
+select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    transition: border-color 0.2s;
+}
+
+.login-card input:focus {
+    outline: none;
+    border: 2px solid #38bdf8;
+}
+
+/* ===== Loading Spinner ===== */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #38bdf8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== Toast Notifications ===== */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    animation: slideIn 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.success {
+    background: #22c55e;
+}
+
+.toast.error {
+    background: #dc2626;
+}
+
+.toast.info {
+    background: #3b82f6;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===== Glow Effect for Status ===== */
+.glow-red {
+    animation: glowRed 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowRed {
+    from {
+        text-shadow: 0 0 5px #ef4444;
+    }
+
+    to {
+        text-shadow: 0 0 20px #ef4444, 0 0 30px #dc2626;
+    }
+}
+
+.glow-green {
+    animation: glowGreen 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowGreen {
+    from {
+        text-shadow: 0 0 5px #22c55e;
+    }
+
+    to {
+        text-shadow: 0 0 20px #22c55e, 0 0 30px #16a34a;
+    }
+}
